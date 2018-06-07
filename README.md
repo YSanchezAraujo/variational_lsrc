@@ -21,7 +21,7 @@ General logic of execution:
       * a) `write_varbvs` function creates directory structure and writes a bash file that calls the `gtoi_template.r` file when inside the singularity image
       * b) `run_sing` function writes batch files for slurm that execute a singularity image with all dependencies and environmental variables to run the analysis. 
 
-* example command
+* example command to run the first part of the analysis
 ```
 python gtoi.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/brain_snp_covars_meancentered_scaled.h5  \
 -sn /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/dev_for_container/bf_out \
