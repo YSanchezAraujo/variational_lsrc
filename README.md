@@ -9,7 +9,7 @@ command to build using singularity:
 singularity build genus_img.sqsh docker://ysa6/genus:latest
 ```
 
-command to run the container
+command to run the container for an interactive session
 ```
 singularity shell --bind /storage:/storage genus_img.sqsh
 ```
