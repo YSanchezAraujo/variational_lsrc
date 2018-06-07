@@ -3,7 +3,7 @@ import numpy as np
 from argparse import ArgumentParser
 from nipype import Function, Node, Workflow, IdentityInterface
 
-parser = ArgumentParser(prog="run_sing.py", description=__doc__)
+parser = ArgumentParser(prog="gtoi.py", description=__doc__)
 parser.add_argument("-bp", "--bind_path", type=str, help="bind path for image")
 parser.add_argument("-ip", "--img_path", type=str, help="path to the singularity image")
 parser.add_argument("-nr", "--nruns", type=str, help="number of instances to spin up")
