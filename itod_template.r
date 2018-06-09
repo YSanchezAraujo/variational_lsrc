@@ -15,8 +15,7 @@ bf <- rep(0., N)
 bflog10 <- rep(0., N)
 
 for (idx in 1:N) {
-    fp <- as.character(df[idx, 1])
-    fpdf <- read.csv(fp)
+    fpdf <- read.csv(as.character(df[idx, 1]))
     bf[idx] = fpdf[1,2]
     bflog10[idx] = fpdf[2,2]
 }
