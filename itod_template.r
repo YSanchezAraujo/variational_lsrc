@@ -30,6 +30,10 @@ fit <- varbvs(X, Z, y, family="binomial", logodds=matrix(bf, 1))
 dir.create("fxvb_out")
 setwd(file.path(getwd(), "fxvb_out"))
 
-# things to save together
-# logw, w, sa, logoods, pip, beta
-## eta, s, mu, alpha
+n170 <- as.data.frame(cbind(fit$logw, fit$w, fit$sa, fit$logodds, fit$pip, fit$beta))
+colnames(n170) <- c("logw", "w", "sa", "logodds", "pip", "beta")
+write.csv(n170, "logw_w_sa_logodds_pip_beta.csv", row.names=F)
+write.csv(as.data.frame(fit$eta), "eta.csv", row.names=F)
+write.csv(as.data.frame(fit$s), "s.csv", row.names=F)
+write.csv(as.data.frame(fit$mu), "mu.csv", row.names=F)
+write.csv(as.data.frame(fit$alpha), "alpha.csv", row.names=F)
