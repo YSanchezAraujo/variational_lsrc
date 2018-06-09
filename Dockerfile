@@ -1,23 +1,13 @@
 FROM rocker/shiny
 
-WORKDIR /tmp
-
-RUN wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.10.1.tar \
-    && tar xf hdf5-1.10.1.tar
-
-WORKDIR /tmp/hdf5-1.10.1
-
-RUN ./configure --prefix=/usr/local --enable-cxx --enable-build-mode=production \
-    && make -j 16 \
-    && make install \
-    && echo "/usr/local/lib" > /etc/ld.so.conf.d/h5.conf \
-    && ldconfig
-
-RUN R -e 'install.packages("h5")'
-RUN R -e 'install.packages("varbvs")'
+ARG DEBIAN_FRONTEND="noninteractive"
 
 RUN apt-get -yqq update \
-    && apt-get -yqq install python3-pip python3-dev \
-    && pip3 --no-cache-dir install numpy scipy pandas ipython nipype jupyter scikit-learn tensorflow==1.6 edward
+    && apt-get -yqq install --no-install-recommends libhdf5-dev python3-dev \
+    && R -e 'install.packages(c("h5", "varbvs"))' \
+    && wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 - --no-cache-dir \
+    && pip3 --no-cache-dir install numpy scipy pandas ipython nipype jupyter scikit-learn tensorflow==1.6 edward \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT ["/bin/bash"]
