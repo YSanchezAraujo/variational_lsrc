@@ -21,7 +21,7 @@ if not os.path.isdir(args.save_name):
     os.makedirs(args.save_name)
 
 cwd = os.getcwd()
-wf = Workflow(name="sing")
+wf = Workflow(name="varbvs-s1")
 wf.base_dir = cwd
 
 Iternode = Node(IdentityInterface(fields=["run_idx"]), name="Iternode")
@@ -54,8 +54,8 @@ def run_sing(bind_path, img_path, base_dir, run_idx, script_path):
     import os
     from subprocess import call
     singfile = "\n".join([
-        "#!/bin/bash", "#SBATCH --mem=6G", "#SBATCH -c 2",
-        "#SBATCH --time=02:00:00", ("singularity exec --bind "
+        "#!/bin/bash", "#SBATCH --mem=8G", "#SBATCH -c 2",
+        "#SBATCH --time=04:00:00", ("singularity exec --bind "
         "{bind_path} {img_path} {cmd}")
     ])
     path_to_cd = "/".join(script_path.split("/")[:-1])
@@ -68,29 +68,6 @@ def run_sing(bind_path, img_path, base_dir, run_idx, script_path):
         f.write(singfile)
     call("sbatch {}".format(sif).split())
     return None
-
-# something is wrong here, or in the way it was saved
-# also this should probably be called in another script
-#def check_failed(save_name, data_path, cnames):
-#    import os
-#    import numpy as np
-#    import pandas as pd
-#    import h5py
-#    snfiles = [x.split('-') for x in os.listdir(save_name)]
-#    df = pd.DataFrame()
-#    df["col_idx"] = [int(i[1]) for i in snfiles]
-#    df["col_name"] = [i[2] for i in snfiles]
-#    df = df.sort_values("col_idx").reset_index(drop=True)
-#    df = df.set_index("col_idx")
-#    missing = np.setdiff1d(np.arange(170)+1, df["col_idx"].values)
-#    with open(data_path, 'r') as h5f:
-#        icols = h5f.get(cnames).value
-#    dfm = pd.DataFrame()
-#    dfm["col_val"] = [str(i, 'utf-8') for i in icols]
-#    dfm["col_idx"] = np.arange(170)+1
-#    dfm = dfm.set_index("col_idx")
-#    result = dfm.iloc[missing]
-
 
 Write_Varbvs = Node(interface=Function(
         input_names=["base_dir", "data_path", "save_name", "col_idx", "cnames"],
