@@ -25,7 +25,7 @@ X <- file["I"][,]
 Z <- file["Z"][,]
 y <- file["y"][,]
 
-fit <- varbvs(X, Z, y, family="binomial", logodds=matrix(bf, 1))
+fit <- varbvs(X, Z, y, family="binomial", logodds=matrix(bflog10))
 
 dir.create("fxvb_out")
 setwd(file.path(getwd(), "fxvb_out"))
