@@ -30,3 +30,13 @@ python gtoi.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files
 -bp /storage:/storage \
 -cn I_cols
 ```
+
+that first part should have created a directory where the bayes factor scores are outputed, using the path to that directory you run the second part with this example command, using the same logic execution as above: 
+
+
+```
+python itod.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/brain_snp_covars_meancentered_scaled.h5 \
+-sn /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/dev_for_container/fxvb_out \
+-ip /storage/gablab001/data/genus/GIT/genus/genus_img.sqsh -bp /storage:/storage \
+-bf /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/dev_for_container/bf_out
+```
