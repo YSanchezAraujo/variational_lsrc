@@ -2,9 +2,6 @@ import os
 from argparse import ArgumentParser
 from nipype import Function, Node, Workflow, IdentityInterface
 
-# TODO: 
-#     1. check if it works
-
 parser = ArgumentParser(prog="itod.py", description=__doc__)
 parser.add_argument("-dp", "--data_path", type=str, help="full path to the data")
 parser.add_argument("-bf", "--bayes_factor", type=str, help="full path to bayes factor")
@@ -45,7 +42,7 @@ def fxvb(info_path, base_dir, data_path, save_name, bind_path, img_path):
         script=file_name, data_path=data_path, bf_path=info_path,
         save_path=save_name
     )
-    if os.getwd() != base_dir:
+    if os.getcwd() != base_dir:
         os.chdir(base_dir)
     wd = f_name.split(".")[0]
     os.makedirs(wd)
@@ -69,13 +66,13 @@ def fxvb(info_path, base_dir, data_path, save_name, bind_path, img_path):
 
 Collect_Varbvs = Node(interface=Function(
         input_names=["bayes_factor", "base_dir"],
-        output_names=["info_path"]
+        output_names=["info_path"],
         function=collect_varbvs
     ),
     name="Collect_Varbvs"
 )
 
-Fxvb = Node(Interface=Function(
+Fxvb = Node(interface=Function(
         input_names=["info_path", "base_dir", "data_path", "save_name", "bind_path", "img_path"],
         output_names=[],
         function=fxvb
@@ -84,7 +81,7 @@ Fxvb = Node(Interface=Function(
 )
 
 Collect_Varbvs.inputs.base_dir = wf.base_dir
-Collect_Varbvs.inputs.base_factor = args.bayes_factor
+Collect_Varbvs.inputs.bayes_factor = args.bayes_factor
 wf.connect(Collect_Varbvs, "info_path", Fxvb, "info_path")
 Fxvb.inputs.base_dir = wf.base_dir
 Fxvb.inputs.data_path = args.data_path
