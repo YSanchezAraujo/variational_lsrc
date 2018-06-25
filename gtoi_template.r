@@ -9,6 +9,9 @@ save_path = args[2]
 col_idx = as.numeric(args[3])
 cname = args[4]
 
+# here I'm just testing what it would look like for a single run
+print(data_path)
+
 file <- h5file(data_path, 'r')
 icol_name = file[cname][,][col_idx]
 Iy <- file["I"][ ,col_idx]
