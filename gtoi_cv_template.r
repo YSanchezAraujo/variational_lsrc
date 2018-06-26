@@ -2,39 +2,7 @@
 
 library('h5')
 library('varbvs')
-
-cv_split <- function(indices, split_percent) {
-    num_rows <- floor(length(indices)*split_percent)
-    use_idx <- sample(indices, size=num_rows, replace=FALSE)
-    if (sum(table(use_idx)) != num_rows) {
-        print("ERROR IN USE_IDX:CV_SPLIT")
-        return(FALSE)
-    }
-    diff_use_idx <- setdiff(indices, use_idx)
-    if (length(intersect(use_idx, diff_use_idx)) != 0) {
-        print("ERROR IN SETDIFF:CV_SPIT")
-        return(FALSE)
-    }
-    return(list(train=use_idx, test=diff_use_idx))
-}
-
-save_results <- function(mf, bfdf) {
-    write.csv(bfdf, "bayesfactor.txt")
-    write.csv(as.data.frame(mf$mu.cov), "mu.cov.csv", row.names=F)
-    logwdf <- as.data.frame(mf$logw)
-    colnames(logwdf) <- "logw"
-    write.csv(logwdf, "logw.csv", row.names=F)
-    idf <- as.data.frame(cbind(mf$logw, mf$w, mf$sigma, mf$sa, mf$logodds))
-    colnames(idf) <- c("logw", "w", "sigma", "sa", "logodds")
-    write.csv(idf, "logw_w_sigma_sa_logodds.csv", row.names=F)
-    mu_s <- as.data.frame(cbind(mf$pip, mf$beta))
-    colnames(mu_s) <- c("pip", "beta")
-    write.csv(mu_s, "pip_beta.csv", row.names=F)
-    write.csv(as.data.frame(mf$alpha), "alpha.csv", row.names=F)
-    write.csv(as.data.frame(mf$mu), "mu.csv", row.names=F)
-    write.csv(as.data.frame(mf$s), "s.csv", row.names=F)
-    write.csv(as.data.frame(mf$pve), "pve.csv", row.names=F)
-}
+source('utils.r')
 
 args = commandArgs(trailingOnly=T)
 data_path = args[1]
@@ -48,38 +16,38 @@ icol_name = file[cname][,][col_idx]
 Iy <- file["I"][ ,col_idx]
 Z <- file["Z"][,]
 G <- file["G"][,]
-nsplits=5
+nsplits = 5
 
-write_splits <- function(nsplits, indices, write_path){
-    return_paths <- c()
-    for (ns in 1:nsplits) {
-        df_i <- as.data.frame(cv_split(indices, .5))
-        wrp <- file.path(write_path, paste("cv_indicies_", ns, ".csv",sep=""))
-        print(wrp)
-        write.csv(df_i, wrp, row.names=FALSE)
-        return_paths[ns] = wrp
-    }
-    return(return_paths)
-}
+cv_df <- make_combined_splits(seq(dim(Iy)[1]), .5, nsplits)
 
-cv_read_paths <- write_splits(nsplits, seq(dim(Iy)[1]), cvsavep)
+write.csv(
+    cv_df,
+    file.path(cvsavep, "cv_splits_df.csv"),
+    row.names=FALSE
+)
 
 for (ns in seq(nsplits)){
-    # need to read in cvpaths
-    split <- read.csv(cv_read_paths[ns])
+
+    train_col <- paste("train", ns, sep="")
+    test_col <- paste("test", ns, sep="")
 
     # alternative model
     fit <- varbvs(
-        G[split$train, ],
-        Z[split$train, ],
-        matrix(Iy[split$train, ]),
+        G[cv_df[, train_col], ],
+        Z[cv_df[, train_col], ],
+        matrix(Iy[cv_df[, train_col]])
         "gaussian",
         logodds=seq(-5,-3,0.25)
     )
 
     # null model
-    X <- matrix(1., length(split$train), 1)
-    fit_null <- varbvs(X, Z[split$train, ], matrix(Iy[split$train, ]), "gaussian")
+    X <- matrix(1., length(cv_df[, train_col]), 1)
+    fit_null <- varbvs(
+        X,
+        Z[cv_df[, train_col], ],
+        matrix(Iy[cv_df[, train_col], ]),
+        "gaussian"
+    )
     bf <- bayesfactor(fit_null$logw, fit$logw)
     bfdf <- as.data.frame(c(bf, log10(bf)))
     rownames(bfdf) <- c("bf", "ln10bf")
