@@ -2,7 +2,7 @@
 
 library('h5')
 library('varbvs')
-source('utils.r')
+#source('utils.r')
 
 args = commandArgs(trailingOnly=T)
 data_path = args[1]
@@ -10,6 +10,10 @@ save_path = args[2]
 col_idx = as.numeric(args[3])
 cname = args[4]
 cvsavep = args[5]
+g2iresdir = args[6]
+
+setwd("/storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/dev_for_container/")
+source('utils.r')
 
 file <- h5file(data_path, 'r')
 icol_name = file[cname][,][col_idx]
@@ -18,16 +22,17 @@ Z <- file["Z"][,]
 G <- file["G"][,]
 nsplits = 5
 
-cv_df <- make_combined_splits(seq(dim(Iy)[1]), .5, nsplits)
+#cv_df <- make_combined_splits(seq(dim(Iy)[1]), .5, nsplits)
 
-write.csv(
-    cv_df,
-    file.path(cvsavep, "cv_splits_df.csv"),
-    row.names=FALSE
-)
+#write.csv(
+#    cv_df,
+#    file.path(cvsavep, "cv_splits.csv"),
+#    row.names=FALSE
+#)
+
+cv_df <- read.csv(cvsavep)
 
 for (ns in seq(nsplits)){
-
     train_col <- paste("train", ns, sep="")
     test_col <- paste("test", ns, sep="")
 
@@ -35,7 +40,7 @@ for (ns in seq(nsplits)){
     fit <- varbvs(
         G[cv_df[, train_col], ],
         Z[cv_df[, train_col], ],
-        matrix(Iy[cv_df[, train_col]])
+        matrix(Iy[cv_df[, train_col]]),
         "gaussian",
         logodds=seq(-5,-3,0.25)
     )
@@ -54,15 +59,16 @@ for (ns in seq(nsplits)){
     colnames(bfdf) <- "comp"
 
     # writing results to file
-    write_name = paste("g2i_result_col_idx", col_idx, "_cv_", ns, sep="")
+    write_name <- paste("g2i_result_col_idx", col_idx, "_cv_", ns, sep="")
+    gdir <- file.path(g2iresdir, write_name)
 
-    if (!dir.exists(file.path(getwd(), write_name))) {
-        dir.create(write_name)
+    if (!dir.exists(gdir)) {
+        dir.create(gdir)
     } else {
         print("directory exists, did not create it")
     }
 
-    setwd(write_name)
+    setwd(gdir)
     save_results(fit, bf)
 
     setwd(save_path)
