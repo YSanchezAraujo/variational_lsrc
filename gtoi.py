@@ -11,6 +11,7 @@ parser.add_argument("-dp", "--data_path", type=str, help="where data is")
 parser.add_argument("-sn", "--save_name", type=str, help="name of results file")
 parser.add_argument("-cn", "--cnames", type=str, help="column string dataset in h5 file")
 parser.add_argument("-cv", "--cvpath", type=str, help="base path to save cv indices", required=False)
+parser.add_argument("-gd", "--gdir", type=str, help="base path to save cv results", required=False)
 args = parser.parse_args()
 
 try:
@@ -28,18 +29,18 @@ wf.base_dir = cwd
 Iternode = Node(IdentityInterface(fields=["run_idx"]), name="Iternode")
 Iternode.iterables = ("run_idx", np.arange(nruns)+1)
 
-def write_varbvs(base_dir, data_path, save_name, col_idx, cnames, cvpath):
+def write_varbvs(base_dir, data_path, save_name, col_idx, cnames, cvpath, gdir):
     import os
-    f_name = "bf-feature_idx-{}.csv".format(col_idx)
+    f_name = "bfcv-feature_idx-{}.csv".format(col_idx)
     shfile = "\n".join([
         "#!/bin/bash", ("R_DEFAULT_PACKAGES= Rscript "
-        "{script} {data_path} {save_name} {col_idx} {cnames} {cvpath}")
+        "{script} {data_path} {save_name} {col_idx} {cnames} {cvpath} {gdir}")
     ])
-    file_name = os.path.join(base_dir, "gtoi_template.r")
+    file_name = os.path.join(base_dir, "gtoi_cv_template.r")
     r_file = shfile.format(
         script=file_name, data_path=data_path,
         save_name=save_name, col_idx=col_idx,
-        cnames=cnames, cvpath=cvpath
+        cnames=cnames, cvpath=cvpath, gdir=gdir
     )
     if os.getcwd() != base_dir:
         os.chdir(base_dir)
@@ -56,8 +57,8 @@ def run_sing(bind_path, img_path, base_dir, run_idx, script_path):
     import os
     from subprocess import call
     singfile = "\n".join([
-        "#!/bin/bash", "#SBATCH --mem=8G", "#SBATCH -c 2",
-        "#SBATCH --time=04:00:00", ("singularity exec --bind "
+        "#!/bin/bash", "#SBATCH --mem=10G", "#SBATCH -c 2",
+        "#SBATCH --time=03:00:00", ("singularity exec --bind "
         "{bind_path} {img_path} {cmd}")
     ])
     path_to_cd = "/".join(script_path.split("/")[:-1])
@@ -74,7 +75,7 @@ def run_sing(bind_path, img_path, base_dir, run_idx, script_path):
 Write_Varbvs = Node(interface=Function(
         input_names=[
             "base_dir", "data_path", "save_name",
-            "col_idx", "cnames", "cvpath"
+            "col_idx", "cnames", "cvpath", "gdir"
         ],
         output_names=["script_path", "col_idx", "save_name"],
         function=write_varbvs
@@ -95,6 +96,7 @@ Write_Varbvs.inputs.data_path = args.data_path
 Write_Varbvs.inputs.save_name = args.save_name
 Write_Varbvs.inputs.cnames = args.cnames
 Write_Varbvs.inputs.cvpath = args.cvpath
+Write_Varbvs.inputs.gdir = args.gdir
 wf.connect(Iternode, "run_idx", Write_Varbvs, "col_idx")
 Run_Sing.inputs.bind_path = args.bind_path
 Run_Sing.inputs.img_path = args.img_path
