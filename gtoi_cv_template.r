@@ -21,15 +21,6 @@ Iy <- file["I"][ ,col_idx]
 Z <- file["Z"][,]
 G <- file["G"][,]
 nsplits = 5
-
-#cv_df <- make_combined_splits(seq(dim(Iy)[1]), .5, nsplits)
-
-#write.csv(
-#    cv_df,
-#    file.path(cvsavep, "cv_splits.csv"),
-#    row.names=FALSE
-#)
-
 cv_df <- read.csv(cvsavep)
 
 for (ns in seq(nsplits)){
