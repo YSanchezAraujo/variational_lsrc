@@ -2,7 +2,6 @@
 
 library('h5')
 library('varbvs')
-#source('utils.r')
 
 args = commandArgs(trailingOnly=T)
 data_path = args[1]
@@ -64,5 +63,4 @@ for (ns in seq(nsplits)){
 
     setwd(save_path)
     write.csv(bfdf, paste("bf_col_idx-", col_idx, "-", "_cv_", ns, "_",icol_name, sep=""))
-
 }
