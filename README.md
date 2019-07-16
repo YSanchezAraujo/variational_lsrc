@@ -7,7 +7,7 @@ Cross validation splits were pre-made and saved to a csv file, see `save_cv_spli
 
 ### computing
 
-* this is intended for HCP use, if you only need to run this a single time, you can bypass all of the singularity, and nipype and just use the R files.
+* this is intended for HCP use, if you only need to run this a single time, you can bypass all of the singularity, and nipype and just use the R files(you will have to change them accordingly).
 
 docker url:
 
