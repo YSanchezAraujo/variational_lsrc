@@ -48,3 +48,8 @@ python itod_cv.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/fi
 
 * take a look at `itody_cv.py` and `gtoi_cv.py` to see what the arguments e.g. `-bf` mean. 
 * see `save_h5.py` for how the data is saved in `brain_snp_covars_meancentered_scaled.h5`
+
+#### Please cite:
+```
+Batmanghelich N, Dalca A, Quon G, Sabuncu M, Golland P. Probabilistic Modeling of Imaging, Genetics and the Diagnosis. IEEE Transactions on Medical Imaging (TMI), pp 1765-1779, 2016.  doi: 10.1109/TMI.2016.2527784. PMID: 26886973. PMCID: PMC5364030.
+```
