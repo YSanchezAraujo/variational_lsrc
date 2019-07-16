@@ -45,3 +45,5 @@ python itod_cv.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/fi
 -nc 100 \
 -cp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/files_for_edward/dev_for_container/shuffle_split_cv.csv
 ```
+
+* take a look at `itody_cv.py` and `gtoi_cv.py` to see what the arguments e.g. `-bf` mean. 
