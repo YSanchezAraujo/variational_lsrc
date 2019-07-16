@@ -47,3 +47,4 @@ python itod_cv.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/fi
 ```
 
 * take a look at `itody_cv.py` and `gtoi_cv.py` to see what the arguments e.g. `-bf` mean. 
+* see `save_h5.py` for how the data is saved in `brain_snp_covars_meancentered_scaled.h5`
