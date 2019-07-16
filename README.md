@@ -1,5 +1,14 @@
 # variational_lsrc
 
+### data:
+
+Input data `brain_snp_covars_meancentered_scaled.h5` is an hdf5 file, see the file `save_h5.py` for more information. 
+Cross validation splits were pre-made and saved to a csv file, see `save_cv_splits.py` for more information.
+
+### computing
+
+* this is intended for HCP use, if you only need to run this a single time, you can bypass all of the singularity, and nipype and just use the R files.
+
 docker url:
 
 https://hub.docker.com/r/ysa6/genus/
@@ -13,8 +22,6 @@ command to run the container for an interactive session
 ```
 singularity shell --bind /storage:/storage genus_img.sqsh
 ```
-
-
 
 General logic of execution:
   1. `gtoi_cv.py` 
@@ -47,7 +54,6 @@ python itod_cv.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/fi
 ```
 
 * take a look at `itody_cv.py` and `gtoi_cv.py` to see what the arguments e.g. `-bf` mean. 
-* see `save_h5.py` for how the data is saved in `brain_snp_covars_meancentered_scaled.h5`
 
 #### Please cite:
 ```
