@@ -28,10 +28,6 @@ def plausible_matches(icols, ref_list):
     return {ic:match_search(ic, ref_list) for ic in icols}
 
 def convert_new_cols(matched_dict):
-    special_search = [
-        "lh_S_central_thickness_D", "rh_S_central_thickness_D"
-    ]
-
     out_orig = []
     out_comp = []
 
