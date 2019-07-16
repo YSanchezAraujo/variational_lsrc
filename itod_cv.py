@@ -23,7 +23,7 @@ def collect_varbvs(bayes_factor, base_dir, cv_iter):
     import pandas as pd
     files = []
     bayes_outputs = os.listdir(bayes_factor)
-    match_str = "cv_{}".format(cv_iter)
+    match_str = "cv_{}_".format(cv_iter)
     for out in bayes_outputs:
         if  match_str in out:
             files.append([out] + out.split('-')[1:])
