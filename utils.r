@@ -1,19 +1,3 @@
-# use for both combined and not combined
-cv_split <- function(indices, split_percent) {
-    num_rows <- floor(length(indices)*split_percent)
-    indices <- sample(indices, size=length(indices), replace=FALSE)
-    use_idx <- sample(indices, size=num_rows, replace=FALSE)
-    if (sum(table(use_idx)) != num_rows) {
-        print("ERROR IN USE_IDX:CV_SPLIT")
-        return(FALSE)
-    }
-    diff_use_idx <- setdiff(indices, use_idx)
-    if (length(intersect(use_idx, diff_use_idx)) != 0) {
-        print("ERROR IN SETDIFF:CV_SPIT")
-        return(FALSE)
-    }
-    return(list(train=use_idx, test=diff_use_idx))
-}
 
 make_combined_splits <- function(indices, split_percent, nsplits){
     num_rows <- floor(length(indices)*split_percent)
