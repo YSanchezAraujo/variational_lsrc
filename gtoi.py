@@ -10,7 +10,7 @@ parser.add_argument("-nr", "--nruns", type=str, help="number of instances to spi
 parser.add_argument("-dp", "--data_path", type=str, help="where data is")
 parser.add_argument("-sn", "--save_name", type=str, help="name of results file")
 parser.add_argument("-cn", "--cnames", type=str, help="column string dataset in h5 file")
-parser.add_argument("-cv", "--cvpath", type=str, help="base path to save cv indices", required=False)
+parser.add_argument("-cv", "--cvpath", type=str, help="base path of cv file", required=False)
 parser.add_argument("-gd", "--gdir", type=str, help="base path to save cv results", required=False)
 args = parser.parse_args()
 
@@ -57,8 +57,8 @@ def run_sing(bind_path, img_path, base_dir, run_idx, script_path):
     import os
     from subprocess import call
     singfile = "\n".join([
-        "#!/bin/bash", "#SBATCH --mem=10G", "#SBATCH -c 2",
-        "#SBATCH --time=03:00:00", ("singularity exec --bind "
+        "#!/bin/bash", "#SBATCH --mem=16G", "#SBATCH -c 2",
+        "#SBATCH --time=8:00:00", ("singularity exec --bind "
         "{bind_path} {img_path} {cmd}")
     ])
     path_to_cd = "/".join(script_path.split("/")[:-1])
