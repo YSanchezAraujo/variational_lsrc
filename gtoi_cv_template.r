@@ -19,12 +19,12 @@ icol_name = file[cname][,][col_idx]
 Iy <- file["I"][ ,col_idx]
 Z <- file["Z"][,]
 G <- file["G"][,]
-nsplits = 5
 cv_df <- read.csv(cvsavep)
+nsplits <- as.integer(dim(cv_df)[2]/2)
 
 for (ns in seq(nsplits)){
     train_col <- paste("train", ns, sep="")
-    test_col <- paste("test", ns, sep="")
+    #test_col <- paste("test", ns, sep="")
 
     # alternative model
     fit <- varbvs(
@@ -63,4 +63,5 @@ for (ns in seq(nsplits)){
 
     setwd(save_path)
     write.csv(bfdf, paste("bf_col_idx-", col_idx, "-", "_cv_", ns, "_",icol_name, sep=""))
+
 }
