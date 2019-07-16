@@ -11,9 +11,9 @@ cv_path = args[4]
 cv_idx = args[5]
 
 df <- read.csv(bf_path)
-test_idx <- read.csv(cv_path)[, paste("test", cv_idx, sep="")]
+#test_idx <- read.csv(cv_path)[, paste("test", cv_idx, sep="")]
+train_idx <- read.csv(cv_path)[, paste("train", cv_idx, sep="")]
 N <- dim(df)[1]
-
 bf <- rep(0., N)
 bflog10 <- rep(0., N)
 
@@ -24,9 +24,9 @@ for (idx in 1:N) {
 }
 
 file <- h5file(data_path, 'r')
-X <- file["I"][test_idx, ]
-Z <- file["Z"][test_idx, ]
-y <- file["y"][test_idx]
+X <- file["I"][train_idx, ]
+Z <- file["Z"][train_idx, ]
+y <- file["y"][train_idx]
 
 fit <- varbvs(X, Z, y, family="binomial", logodds=matrix(bflog10))
 
