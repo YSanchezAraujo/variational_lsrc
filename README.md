@@ -1,11 +1,11 @@
 # variational_lsrc
 
-### data:
+#### data:
 
 Input data `brain_snp_covars_meancentered_scaled.h5` is an hdf5 file, see the file `save_h5.py` for more information. 
 Cross validation splits were pre-made and saved to a csv file, see `save_cv_splits.py` for more information.
 
-### computing
+#### computing
 
 * this is intended for HCP use, if you only need to run this a single time, you can bypass all of the singularity, and nipype and just use the R files(you will have to change them accordingly).
 
