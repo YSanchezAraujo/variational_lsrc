@@ -57,7 +57,26 @@ python itod_cv.py -dp /storage/gablab001/data/genus/GIT/genus/bayes/data_sets/fi
 
 #### Please cite:
 ```
-Batmanghelich N, Dalca A, Quon G, Sabuncu M, Golland P. Probabilistic Modeling of Imaging, Genetics and the Diagnosis. IEEE Transactions on Medical Imaging (TMI), pp 1765-1779, 2016.  doi: 10.1109/TMI.2016.2527784. PMID: 26886973. PMCID: PMC5364030.
+@article{batmanghelich2016probabilistic,
+  title={Probabilistic modeling of imaging, genetics and diagnosis},
+  author={Batmanghelich, Nematollah K and Dalca, Adrian and Quon, Gerald and Sabuncu, Mert and Golland, Polina},
+  journal={IEEE transactions on medical imaging},
+  volume={35},
+  number={7},
+  pages={1765--1779},
+  year={2016},
+  publisher={IEEE}
+}
 
-Carbonetto, P. and Stephens, M. (2012). Scalable variational inference for Bayesian variable selection in regression, and its accuracy in genetic association studies. Bayesian Analysis 7, 73-108.
+
+@article{carbonetto2012scalable,
+  title={Scalable variational inference for Bayesian variable selection in regression, and its accuracy in genetic association studies},
+  author={Carbonetto, Peter and Stephens, Matthew and others},
+  journal={Bayesian analysis},
+  volume={7},
+  number={1},
+  pages={73--108},
+  year={2012},
+  publisher={International Society for Bayesian Analysis}
+}
 ```
